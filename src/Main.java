@@ -149,7 +149,7 @@ public class Main {
                 .construir();
 
             registrarPrestamo.ejecutar(estudiante, libro, new Date());
-            System.out.println("✅ Préstamo registrado para " + estudiante.getNombre());
+            System.out.println("Préstamo registrado para " + estudiante.getNombre());
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
         }

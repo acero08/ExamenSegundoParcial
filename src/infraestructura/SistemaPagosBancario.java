@@ -1,3 +1,4 @@
+//No hace nada para pues el examen pero solo es por la demostracion de la Architectura
 package infraestructura;
 
 // Sistema externo — no se puede modificar
