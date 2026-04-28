@@ -55,4 +55,19 @@ note top of ServicioMultas
   SRP: una sola
   responsabilidad
 end note
+
+interface GeneradorReportes {
+    + generarReportePDF() : void
+}
+
+class ReportesPDF {
+    + generarReportePDF() : void
+}
+
+GeneradorReportes <|.. ReportesPDF
+
+note top of GeneradorReportes
+  SRP: generación 
+  de documentos
+end note
 @enduml

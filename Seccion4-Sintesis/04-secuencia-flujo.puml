@@ -18,6 +18,7 @@ participant "CatalogoCETYS_SOAP\n[Sistema Externo]" as SOAP
 participant "SolicitudPrestamo.Builder\n<<Builder>>" as Builder
 participant "PagosAdapter\n<<Adapter>>" as AdapPag
 participant "SistemaPagosBancario\n[Sistema Externo]" as Banco
+participant "RepositorioPrestamos" as Repo
 participant "AuditoriaLogger\n<<Singleton>>" as Logger
 
 Estudiante -> Web : solicitar préstamo
@@ -37,6 +38,9 @@ UC -> AdapPag : cobrarFianza(idEstudiante, monto)
 AdapPag -> Banco : procesarPago(referencia, monto, "MXN")
 Banco --> AdapPag : RespuestaBancaria(exitoso=true)
 AdapPag --> UC : true
+
+UC -> Repo : guardar(solicitud)
+Repo --> UC : ok
 
 UC -> Logger : registrar("PRESTAMO_REGISTRADO", usuario)
 Logger --> UC : ok
