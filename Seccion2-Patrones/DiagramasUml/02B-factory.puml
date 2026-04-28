@@ -1,0 +1,54 @@
+@startuml Factory-Usuarios
+skinparam classAttributeIconSize 0
+skinparam backgroundColor #1e1e2e
+skinparam class {
+    BackgroundColor #313244
+    BorderColor #cba6f7
+    FontColor #cdd6f4
+    ArrowColor #f38ba8
+}
+
+interface Usuario {
+    + getNombre() : String
+    + getRol() : String
+    + getLimitePrestamos() : int
+}
+
+class Estudiante {
+    - nombre : String
+    + getNombre() : String
+    + getRol() : String
+    + getLimitePrestamos() : int
+}
+
+class Bibliotecario {
+    - nombre : String
+    + getNombre() : String
+    + getRol() : String
+    + getLimitePrestamos() : int
+}
+
+class Admin {
+    - nombre : String
+    + getNombre() : String
+    + getRol() : String
+    + getLimitePrestamos() : int
+}
+
+class Posgrado {
+    - nombre : String
+    + getNombre() : String
+    + getRol() : String
+    + getLimitePrestamos() : int
+}
+
+class FabricaDeUsuarios {
+    + {static} crear(tipo : String, nombre : String) : Usuario
+}
+
+Usuario <|.. Estudiante
+Usuario <|.. Bibliotecario
+Usuario <|.. Admin
+Usuario <|.. Posgrado
+FabricaDeUsuarios ..> Usuario : «crea»
+@enduml

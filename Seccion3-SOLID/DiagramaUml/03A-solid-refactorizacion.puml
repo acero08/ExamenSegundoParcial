@@ -1,0 +1,58 @@
+@startuml SOLID-Refactorizacion
+skinparam classAttributeIconSize 0
+skinparam backgroundColor #1e1e2e
+skinparam class {
+    BackgroundColor #313244
+    BorderColor #cba6f7
+    FontColor #cdd6f4
+    ArrowColor #f38ba8
+}
+
+interface ServicioNotificacion {
+    + enviar(destinatario : String, mensaje : String) : void
+}
+
+interface ServicioAutenticacion {
+    + autenticar(usuario : String, password : String) : boolean
+}
+
+interface CatalogoBiblioteca {
+    + buscarLibro(isbn : String) : Libro
+}
+
+class ServicioPrestamoLibros {
+    + prestarLibro(usuario : Usuario, libro : Libro) : void
+    + devolverLibro(usuario : Usuario, libro : Libro) : void
+}
+
+class ServicioMultas {
+    - pagosAdapter : PagosAdapter
+    + registrarMulta(usuario : Usuario, monto : double) : void
+}
+
+class NotificacionEmail {
+    + enviar(destinatario : String, mensaje : String) : void
+}
+
+class AutenticacionLDAP {
+    + autenticar(usuario : String, password : String) : boolean
+}
+
+class CatalogoCETYSAdapter {
+    + buscarLibro(isbn : String) : Libro
+}
+
+ServicioNotificacion <|.. NotificacionEmail
+ServicioAutenticacion <|.. AutenticacionLDAP
+CatalogoBiblioteca <|.. CatalogoCETYSAdapter
+
+note top of ServicioPrestamoLibros
+  SRP: una sola
+  responsabilidad
+end note
+
+note top of ServicioMultas
+  SRP: una sola
+  responsabilidad
+end note
+@enduml

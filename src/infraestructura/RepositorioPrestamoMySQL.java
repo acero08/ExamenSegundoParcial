@@ -1,0 +1,11 @@
+package infraestructura;
+
+import dominio.SolicitudPrestamo;
+import usecases.RepositorioPrestamos;
+import java.util.List;
+
+public class RepositorioPrestamoMySQL implements RepositorioPrestamos {
+    public void guardar(SolicitudPrestamo s)                      { /* INSERT INTO prestamos... */ }
+    public SolicitudPrestamo buscarPorId(String id)               { return null; }
+    public List<SolicitudPrestamo> listarPorEstudiante(String id) { return null; }
+}

@@ -1,0 +1,60 @@
+@startuml CleanArch-UseCases
+skinparam classAttributeIconSize 0
+skinparam backgroundColor #1e1e2e
+skinparam class {
+    BackgroundColor #313244
+    BorderColor #cba6f7
+    FontColor #cdd6f4
+    ArrowColor #f38ba8
+}
+
+package "Use Cases (Dominio)" #2a2a3e {
+    interface RepositorioPrestamos {
+        + guardar(solicitud : SolicitudPrestamo) : void
+        + buscarPorId(id : String) : SolicitudPrestamo
+        + listarPorEstudiante(id : String) : List
+    }
+
+    interface ServicioNotificacion {
+        + enviar(destinatario : String, mensaje : String) : void
+    }
+
+    class RegistrarPrestamoUseCase {
+        - repositorio : RepositorioPrestamos
+        - notificacion : ServicioNotificacion
+        - auditoria : AuditoriaLogger
+        + RegistrarPrestamoUseCase(repo, notif)
+        + ejecutar(estudiante, libro, fecha) : SolicitudPrestamo
+    }
+}
+
+package "Infraestructura" #3a2a2e {
+    class RepositorioPrestamoMySQL {
+        + guardar(solicitud : SolicitudPrestamo) : void
+        + buscarPorId(id : String) : SolicitudPrestamo
+        + listarPorEstudiante(id : String) : List
+    }
+
+    class RepositorioPrestamoMongoDB {
+        + guardar(solicitud : SolicitudPrestamo) : void
+        + buscarPorId(id : String) : SolicitudPrestamo
+        + listarPorEstudiante(id : String) : List
+    }
+
+    class NotificacionEmail {
+        + enviar(destinatario : String, mensaje : String) : void
+    }
+}
+
+RepositorioPrestamos <|.. RepositorioPrestamoMySQL
+RepositorioPrestamos <|.. RepositorioPrestamoMongoDB
+ServicioNotificacion <|.. NotificacionEmail
+RegistrarPrestamoUseCase --> RepositorioPrestamos : usa interfaz
+RegistrarPrestamoUseCase --> ServicioNotificacion : usa interfaz
+
+note bottom of RepositorioPrestamoMongoDB
+  Cambiar de MySQL a MongoDB
+  = solo esta clase nueva
+  UseCase no se toca
+end note
+@enduml

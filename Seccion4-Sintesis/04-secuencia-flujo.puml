@@ -1,0 +1,46 @@
+@startuml Secuencia-FlujoCompleto
+skinparam backgroundColor #1e1e2e
+skinparam sequence {
+    ArrowColor #f38ba8
+    ActorBorderColor #cba6f7
+    LifeLineBorderColor #585b70
+    ParticipantBackgroundColor #313244
+    ParticipantBorderColor #cba6f7
+    ParticipantFontColor #cdd6f4
+}
+
+actor Estudiante
+participant "WebApp" as Web
+participant "FabricaDeUsuarios\n<<Factory>>" as Factory
+participant "RegistrarPrestamoUseCase" as UC
+participant "CatalogoCETYSAdapter\n<<Adapter>>" as AdapCat
+participant "CatalogoCETYS_SOAP\n[Sistema Externo]" as SOAP
+participant "SolicitudPrestamo.Builder\n<<Builder>>" as Builder
+participant "PagosAdapter\n<<Adapter>>" as AdapPag
+participant "SistemaPagosBancario\n[Sistema Externo]" as Banco
+participant "AuditoriaLogger\n<<Singleton>>" as Logger
+
+Estudiante -> Web : solicitar préstamo
+Web -> Factory : crear("ESTUDIANTE", nombre)
+Factory --> Web : Estudiante
+
+Web -> UC : ejecutar(estudiante, isbn, fecha)
+UC -> AdapCat : buscarLibro(isbn)
+AdapCat -> SOAP : consultarObra(codigoCETYS, "JSON")
+SOAP --> AdapCat : ResultadoSOAP
+AdapCat --> UC : Libro
+
+UC -> Builder : .estudiante()\n.libro()\n.fechaDevolucion()\n.construir()
+Builder --> UC : SolicitudPrestamo (inmutable)
+
+UC -> AdapPag : cobrarFianza(idEstudiante, monto)
+AdapPag -> Banco : procesarPago(referencia, monto, "MXN")
+Banco --> AdapPag : RespuestaBancaria(exitoso=true)
+AdapPag --> UC : true
+
+UC -> Logger : registrar("PRESTAMO_REGISTRADO", usuario)
+Logger --> UC : ok
+
+UC --> Web : SolicitudPrestamo
+Web --> Estudiante : confirmación
+@enduml

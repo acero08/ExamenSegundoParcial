@@ -1,0 +1,53 @@
+@startuml Builder-SolicitudPrestamo
+skinparam classAttributeIconSize 0
+skinparam backgroundColor #1e1e2e
+skinparam class {
+    BackgroundColor #313244
+    BorderColor #cba6f7
+    FontColor #cdd6f4
+    ArrowColor #f38ba8
+}
+
+class SolicitudPrestamo {
+    - estudiante : Usuario
+    - libro : Libro
+    - fechaDevolucion : Date
+    - notasEspeciales : String
+    - renovacionAutomatica : boolean
+    - numRenovaciones : int
+    - SolicitudPrestamo(builder : Builder)
+    --
+    + getEstudiante() : Usuario
+    + getLibro() : Libro
+    + getFechaDevolucion() : Date
+    + getNotasEspeciales() : String
+    + isRenovacionAutomatica() : boolean
+    + getNumRenovaciones() : int
+}
+
+class "SolicitudPrestamo.Builder" as Builder {
+    - estudiante : Usuario
+    - libro : Libro
+    - fechaDevolucion : Date
+    - notasEspeciales : String = null
+    - renovacionAutomatica : boolean = false
+    - numRenovaciones : int = 1
+    --
+    + estudiante(e : Usuario) : Builder
+    + libro(l : Libro) : Builder
+    + fechaDevolucion(f : Date) : Builder
+    + notasEspeciales(n : String) : Builder
+    + renovacionAutomatica(r : boolean) : Builder
+    + numRenovaciones(n : int) : Builder
+    + construir() : SolicitudPrestamo
+}
+
+SolicitudPrestamo +-- Builder
+Builder ..> SolicitudPrestamo : «construye»
+
+note right of Builder
+  construir() valida que
+  estudiante, libro y
+  fechaDevolucion no sean null
+end note
+@enduml

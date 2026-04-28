@@ -1,0 +1,25 @@
+@startuml Singleton-AuditoriaLogger
+skinparam classAttributeIconSize 0
+skinparam backgroundColor #1e1e2e
+skinparam class {
+    BackgroundColor #313244
+    BorderColor #cba6f7
+    FontColor #cdd6f4
+    ArrowColor #f38ba8
+}
+
+class AuditoriaLogger {
+    - {static} instancia : AuditoriaLogger
+    - AuditoriaLogger()
+    --
+    + {static} getInstancia() : AuditoriaLogger
+    + registrar(evento : String, usuario : String) : void
+}
+
+note right of AuditoriaLogger
+  Constructor privado impide
+  hacer new AuditoriaLogger()
+  Solo existe una instancia
+  en todo el sistema
+end note
+@enduml

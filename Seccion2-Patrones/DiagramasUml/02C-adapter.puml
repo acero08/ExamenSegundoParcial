@@ -1,0 +1,50 @@
+@startuml Adapter-Catalogo
+skinparam classAttributeIconSize 0
+skinparam backgroundColor #1e1e2e
+skinparam class {
+    BackgroundColor #313244
+    BorderColor #cba6f7
+    FontColor #cdd6f4
+    ArrowColor #f38ba8
+}
+
+interface CatalogoBiblioteca {
+    + buscarLibro(isbn : String) : Libro
+}
+
+class CatalogoCETYS_SOAP {
+    + consultarObra(codigoCETYS : String, formato : String) : ResultadoSOAP
+}
+
+class CatalogoCETYSAdapter {
+    - servicioExterno : CatalogoCETYS_SOAP
+    + CatalogoCETYSAdapter(servicioExterno : CatalogoCETYS_SOAP)
+    + buscarLibro(isbn : String) : Libro
+}
+
+class Libro {
+    - isbn : String
+    - titulo : String
+    - autor : String
+    + getIsbn() : String
+    + getTitulo() : String
+    + getAutor() : String
+}
+
+class ResultadoSOAP {
+    + codigoCETYS : String
+    + nombreObra : String
+    + autorCompleto : String
+}
+
+CatalogoBiblioteca <|.. CatalogoCETYSAdapter
+CatalogoCETYSAdapter --> CatalogoCETYS_SOAP : usa
+CatalogoCETYSAdapter ..> Libro : «crea»
+CatalogoCETYS_SOAP ..> ResultadoSOAP : «retorna»
+
+note bottom of CatalogoCETYSAdapter
+  Traduce buscarLibro(isbn)
+  a consultarObra(codigoCETYS, formato)
+  sin modificar ninguna de las dos clases
+end note
+@enduml

@@ -1,0 +1,11 @@
+package infraestructura;
+
+import dominio.SolicitudPrestamo;
+import usecases.RepositorioPrestamos;
+import java.util.List;
+
+public class RepositorioPrestamoMongoDB implements RepositorioPrestamos {
+    public void guardar(SolicitudPrestamo s)                      { /* db.collection.insertOne(...) */ }
+    public SolicitudPrestamo buscarPorId(String id)               { return null; }
+    public List<SolicitudPrestamo> listarPorEstudiante(String id) { return null; }
+}
